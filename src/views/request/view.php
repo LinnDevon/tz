@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'previous_request_id',
             'created_at:datetime',
             'updated_at:datetime',
             'email:email',

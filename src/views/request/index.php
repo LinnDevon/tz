@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\RequestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Заявки';
+$this->title                   = 'Заявки';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="request-index">
@@ -22,8 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
+        'filterModel'  => $searchModel,
+        'columns'      => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
@@ -33,15 +33,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'phone',
             [
                 'attribute' => 'manager_id',
-                'filter' => Manager::getList(),
-                'value' => function (Request $request) {
+                'filter'    => Manager::getList(),
+                'value'     => function (Request $request) {
                     return $request->manager ? $request->manager->name : null;
-                }
+                },
             ],
             [
-                'class' => yii\grid\ActionColumn::class,
-                'template' => '{view}',
-                'buttons' => [
+                'attribute' => 'previous_request_id',
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    if (isset($model->previous_request_id)) {
+                        return Html::a('№ ' . $model->previous_request_id,  ['view', 'id' => $model->previous_request_id]);
+                    }
+
+                    return '-';
+                },
+            ],
+            [
+                'class'          => yii\grid\ActionColumn::class,
+                'template'       => '{view}',
+                'buttons'        => [
                     'view' => function ($url) {
                         return Html::a('Просмотр', $url, [
                             'class' => 'btn btn-primary',
@@ -51,9 +62,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width:1px'],
             ],
             [
-                'class' => yii\grid\ActionColumn::class,
-                'template' => '{update}',
-                'buttons' => [
+                'class'          => yii\grid\ActionColumn::class,
+                'template'       => '{update}',
+                'buttons'        => [
                     'update' => function ($url) {
                         return Html::a('Редактировать', $url, [
                             'class' => 'btn btn-primary',
