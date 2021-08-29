@@ -23,7 +23,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'previous_request_id',
+            [
+                'attribute' => 'previous_request_id',
+                'format'    => 'raw',
+                'value'     => function ($model) {
+                    if (isset($model->previous_request_id)) {
+                        return Html::a('№ ' . $model->previous_request_id,  ['view', 'id' => $model->previous_request_id]);
+                    }
+
+                    return '-';
+                },
+            ],
             'created_at:datetime',
             'updated_at:datetime',
             'email:email',

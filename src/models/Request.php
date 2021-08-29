@@ -7,6 +7,8 @@ use yii\db\Expression;
 use yii\db\Query;
 
 /**
+ * Класс модели заявки.
+ *
  * @property int          $id
  * @property string       $created_at
  * @property string       $updated_at
@@ -63,11 +65,11 @@ class Request extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getManager()
-    {
-        return $this->hasOne(Manager::class, ['id' => 'manager_id']);
-    }
-
+    /**
+     * Метод получения идентификатора дубля заявки.
+     *
+     * @return mixed|null
+     */
     public function getDuplicateRequestId()
     {
         $query = (new Query())
@@ -78,7 +80,7 @@ class Request extends \yii\db\ActiveRecord
             ->orderBy(['created_at' => SORT_DESC]);
 
         if ($this->id) {
-            $dayDiff = "TIMESTAMPDIFF(DAY, '" . $this->created_at . "', created_at)";
+            $dayDiff    = "TIMESTAMPDIFF(DAY, '" . $this->created_at . "', created_at)";
             $secondDiff = "TIMESTAMPDIFF(SECOND, '" . $this->created_at . "', created_at)";
             $query->andFilterWhere(['<', $secondDiff, 0]);
         } else {
